@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -20,6 +21,7 @@ var OptionDefaults = []Option{
 type Session struct {
 	User    string
 	Host    string
+	Port    int
 	Options []Option
 
 	Stdin          io.Reader
@@ -46,6 +48,7 @@ func New(host string) *Session {
 	return &Session{
 		User:    user,
 		Host:    host,
+		Port:    22,
 		Options: OptionDefaults,
 
 		Stdin:  os.Stdin,
@@ -78,8 +81,9 @@ func (s *Session) Command() []string {
 	if s.User != "" {
 		host = fmt.Sprintf("%s@%s", s.User, host)
 	}
+	port := strconv.Itoa(s.Port)
 	// add tty flag
-	command = append(command, host, "-t")
+	command = append(command, host, "-p", port, "-t")
 	// append options
 	for _, o := range s.Options {
 		command = append(command, "-o", fmt.Sprintf("%s=%s", o.Name, o.Value))
