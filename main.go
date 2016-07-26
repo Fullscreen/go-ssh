@@ -11,6 +11,7 @@ import (
 
 // OptionDefaults are default ssh options
 var OptionDefaults = []Option{
+	Option{Name: "ServerAliveInterval", Value: "10"},
 	Option{Name: "ConnectTimeout", Value: "10"},
 	Option{Name: "LogLevel", Value: "Error"},
 	Option{Name: "StrictHostKeyChecking", Value: "no"},
